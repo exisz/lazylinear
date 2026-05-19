@@ -30,7 +30,8 @@ def get_help(args: list[str]) -> str:
     cmd = [sys.executable, "-m", "lazylinear"] + args + ["--help"]
     env = {**os.environ, "COLUMNS": "100"}
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, check=False, env=env)
-    return result.stdout or result.stderr
+    help_text = result.stdout or result.stderr
+    return help_text.replace("optional arguments:", "options:")
 
 
 def main() -> None:
