@@ -5,6 +5,7 @@ import json
 import sys
 from typing import Any
 
+from . import __version__
 from .client import LinearError, graphql
 
 ISSUE_FIELDS = "id identifier title url state { name type } team { key name } assignee { name email } labels { nodes { name } }"
@@ -70,14 +71,25 @@ def cmd_states(args):
 
 
 def cmd_issues(args):
-    query = f"""
-    query($first:Int!, $teamKey:String) {{
-      issues(first:$first, filter:{{ team: {{ key: {{ eq: $teamKey }} }} }}) {{
-        nodes {{ {ISSUE_FIELDS} }}
-      }}
-    }}
-    """
-    data = graphql(query, {"first": args.limit, "teamKey": args.team})
+    if args.team:
+        query = f"""
+        query($first:Int!, $teamKey:String!) {{
+          issues(first:$first, filter:{{ team: {{ key: {{ eq: $teamKey }} }} }}) {{
+            nodes {{ {ISSUE_FIELDS} }}
+          }}
+        }}
+        """
+        variables = {"first": args.limit, "teamKey": args.team}
+    else:
+        query = f"""
+        query($first:Int!) {{
+          issues(first:$first) {{
+            nodes {{ {ISSUE_FIELDS} }}
+          }}
+        }}
+        """
+        variables = {"first": args.limit}
+    data = graphql(query, variables)
     rows = data["issues"]["nodes"]
     if args.json:
         dump(rows, True)
@@ -148,6 +160,23 @@ def cmd_comment(args):
     dump(comment if args.json else comment.get("url", comment["id"]), args.json)
 
 
+def cmd_comments(args):
+    data = graphql(
+        "query($id:String!,$first:Int!){ issue(id:$id){ comments(first:$first){ nodes { id url body createdAt user { name email } } } } }",
+        {"id": args.issue, "first": args.limit},
+    )
+    issue = data.get("issue")
+    if not issue:
+        raise LinearError(f"Issue not found: {args.issue}")
+    rows = issue["comments"]["nodes"]
+    if args.json:
+        dump(rows, True)
+    else:
+        for c in rows:
+            author = (c.get("user") or {}).get("name") or "unknown"
+            print(f"{c['createdAt']}\t{author}\t{c['body']}")
+
+
 def cmd_query(args):
     variables = json.loads(args.variables) if args.variables else {}
     dump(graphql(args.graphql, variables), True)
@@ -155,6 +184,7 @@ def cmd_query(args):
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="linear", description="Small Linear CLI shim (lazylinear)")
+    p.add_argument("--version", action="version", version=f"lazylinear {__version__}")
     p.add_argument("--json", action="store_true", help="output JSON")
     sub = p.add_subparsers(dest="command", required=True)
 
@@ -195,6 +225,11 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("issue")
     sp.add_argument("body")
     sp.set_defaults(func=cmd_comment)
+
+    sp = sub.add_parser("comments", help="list comments for an issue")
+    sp.add_argument("issue")
+    sp.add_argument("--limit", type=int, default=25)
+    sp.set_defaults(func=cmd_comments)
 
     sp = sub.add_parser("query", help="run raw GraphQL")
     sp.add_argument("graphql")

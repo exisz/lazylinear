@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "lazylinear"
 version = "0.1.0"
-description = "Zero-dependency CLI for Linear GraphQL API"
+description = "Zero-dependency CLI for Linear's GraphQL API"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9"
@@ -14,7 +14,7 @@ authors = [
 ]
 keywords = ["linear", "cli", "devtools", "issue-tracker"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
@@ -33,6 +33,7 @@ classifiers = [
 Homepage = "https://github.com/exisz/lazylinear"
 Repository = "https://github.com/exisz/lazylinear"
 Issues = "https://github.com/exisz/lazylinear/issues"
+Changelog = "https://github.com/exisz/lazylinear/releases"
 
 [project.optional-dependencies]
 test = ["pytest>=7.0"]
