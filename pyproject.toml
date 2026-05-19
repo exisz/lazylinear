@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lazylinear"
+version = "0.1.0"
+description = "Zero-dependency CLI for Linear GraphQL API"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+  { name = "Exis Z", email = "gotexis@users.noreply.github.com" },
+]
+keywords = ["linear", "cli", "devtools", "issue-tracker"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Bug Tracking",
+  "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/exisz/lazylinear"
+Repository = "https://github.com/exisz/lazylinear"
+Issues = "https://github.com/exisz/lazylinear/issues"
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[project.scripts]
+lazylinear = "lazylinear.cli:main"
+linear = "lazylinear.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lazylinear"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
