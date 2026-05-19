@@ -58,7 +58,7 @@ def cmd_teams(args):
 def cmd_states(args):
     team_id = get_team_id(args.team)
     data = graphql(
-        "query($team:String!){ workflowStates(filter:{team:{id:{eq:$team}}}){ nodes { id name type position } } }",
+        "query($team:ID!){ workflowStates(filter:{team:{id:{eq:$team}}}){ nodes { id name type position } } }",
         {"team": team_id},
     )
     rows = sorted(data["workflowStates"]["nodes"], key=lambda r: r.get("position") or 0)
@@ -98,7 +98,7 @@ def cmd_create(args):
         input_data["description"] = args.description
     if args.state:
         states = graphql(
-            "query($team:String!,$name:String!){ workflowStates(filter:{team:{id:{eq:$team}}, name:{eq:$name}}){ nodes { id name } } }",
+            "query($team:ID!,$name:String!){ workflowStates(filter:{team:{id:{eq:$team}}, name:{eq:$name}}){ nodes { id name } } }",
             {"team": team_id, "name": args.state},
         )["workflowStates"]["nodes"]
         if not states:
@@ -125,7 +125,7 @@ def cmd_move(args):
     issue = graphql("query($id:String!){ issue(id:$id){ team { id key } } }", {"id": args.issue})["issue"]
     team_id = issue["team"]["id"]
     states = graphql(
-        "query($team:String!,$name:String!){ workflowStates(filter:{team:{id:{eq:$team}}, name:{eq:$name}}){ nodes { id name } } }",
+        "query($team:ID!,$name:String!){ workflowStates(filter:{team:{id:{eq:$team}}, name:{eq:$name}}){ nodes { id name } } }",
         {"team": team_id, "name": args.state},
     )["workflowStates"]["nodes"]
     if not states:
