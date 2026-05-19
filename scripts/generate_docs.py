@@ -7,6 +7,7 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 
@@ -27,7 +28,8 @@ COMMANDS = [
 
 def get_help(args: list[str]) -> str:
     cmd = [sys.executable, "-m", "lazylinear"] + args + ["--help"]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, check=False)
+    env = {**os.environ, "COLUMNS": "100"}
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, check=False, env=env)
     return result.stdout or result.stderr
 
 

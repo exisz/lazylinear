@@ -86,8 +86,7 @@ options:
 ### `linear create`
 
 ```
-usage: linear create [-h] --team TEAM [--description DESCRIPTION]
-                     [--state STATE] [--label LABEL]
+usage: linear create [-h] --team TEAM [--description DESCRIPTION] [--state STATE] [--label LABEL]
                      title
 
 positional arguments:
