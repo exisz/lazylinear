@@ -21,15 +21,15 @@ def dump(data: Any, as_json: bool = False) -> None:
 
 
 def team_selector(key: str) -> tuple[str, dict[str, Any]]:
-    return "query($key:String!){ team(key:$key){ id key name } }", {"key": key}
+    return "query($key:String!){ teams(filter:{key:{eq:$key}}, first:1){ nodes { id key name } } }", {"key": key}
 
 
 def get_team_id(key: str) -> str:
     data = graphql(*team_selector(key))
-    team = data.get("team")
-    if not team:
+    teams = data.get("teams", {}).get("nodes", [])
+    if not teams:
         raise LinearError(f"Team not found: {key}")
-    return team["id"]
+    return teams[0]["id"]
 
 
 def get_issue_id(identifier: str) -> str:
