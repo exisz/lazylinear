@@ -49,7 +49,7 @@ Do not commit Linear tokens. The CLI resolves auth in this order:
 
 1. `LINEAR_API_KEY` or `LINEAR_TOKEN`
 2. `~/.config/lazylinear/token`
-3. `roblocks get ${LAZYLINEAR_ROBLOCKS_STORE:-edux} linear_app_token`
+3. `roblocks get ${LAZYLINEAR_ROBLOCKS_STORE:-edux} linear_developer_token`
 
 ## Pull requests
 

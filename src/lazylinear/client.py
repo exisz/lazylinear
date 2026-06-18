@@ -25,7 +25,7 @@ def _read_token_file() -> str | None:
 
 def _read_roblocks_token() -> str | None:
     store = os.environ.get("LAZYLINEAR_ROBLOCKS_STORE", "edux")
-    key = os.environ.get("LAZYLINEAR_ROBLOCKS_KEY", "linear_app_token")
+    key = os.environ.get("LAZYLINEAR_ROBLOCKS_KEY", "linear_developer_token")
     try:
         result = subprocess.run(
             ["roblocks", "get", store, key],
@@ -47,7 +47,7 @@ def get_token() -> str:
     if not token:
         raise LinearError(
             "Linear token not found. Set LINEAR_API_KEY, write ~/.config/lazylinear/token, "
-            "or configure roblocks edux/linear_app_token."
+            "or configure roblocks edux/linear_developer_token."
         )
     return token
 

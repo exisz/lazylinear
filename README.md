@@ -73,9 +73,9 @@ Auth lookup order:
 
 1. `LINEAR_API_KEY` or `LINEAR_TOKEN`
 2. `~/.config/lazylinear/token` (or `LAZYLINEAR_TOKEN_FILE`)
-3. `roblocks get ${LAZYLINEAR_ROBLOCKS_STORE:-edux} ${LAZYLINEAR_ROBLOCKS_KEY:-linear_app_token}`
+3. `roblocks get ${LAZYLINEAR_ROBLOCKS_STORE:-edux} ${LAZYLINEAR_ROBLOCKS_KEY:-linear_developer_token}`
 
-Agent default for Edu X is roblocks store `edux`, key `linear_app_token`.
+Agent default for Edu X is roblocks store `edux`, key `linear_developer_token`.
 
 ## Commands
 
